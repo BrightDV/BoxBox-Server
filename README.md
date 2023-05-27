@@ -30,7 +30,7 @@ That's it! Your Box, Box! server is now up and running on your device, on the po
 ## Box, Box! vs Box, Box! Server
 At first, Box, Box! was an Android application. Then, thanks to Flutter, Box, Box! could be deployed as a website. Sadly, almost all the requests were blocked by the CORS of your browser... So here is Box, Box! Server: a proxy designed to provide you all the news and the results without being blocked.
 
-> Note that Box, Box! Server is meant to be used with Box, Box! (see [the wiki]() to see the steps in order to use your server).
+> Note that Box, Box! Server is meant to be used with Box, Box! (see [the wiki]() to see the instructions to use your server).
 
 ## License
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)  
@@ -44,4 +44,4 @@ published by the Free Software Foundation, either version 3 of the License, or
 ```
 
 ## Contributions
-Contributions are **very welcome**! I am only a newbie in Go so feel free to modify and improve the code, and, of course, open a PR ;)!
+Contributions are **very welcome**! I am only a newbie in Go so feel free to modify and improve the code, and, of course, open a PR ;)
