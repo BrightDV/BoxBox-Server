@@ -30,7 +30,13 @@ That's it! Your Box, Box! server is now up and running on your device, on the po
 ## Box, Box! vs Box, Box! Server
 At first, Box, Box! was an Android application. Then, thanks to Flutter, Box, Box! could be deployed as a website. Sadly, almost all the requests were blocked by the CORS of your browser... So here is Box, Box! Server: a proxy designed to provide you all the news and the results without being blocked.
 
-> Note that Box, Box! Server is meant to be used with Box, Box! (see [the wiki]() to see the instructions to use your server).
+## Usage
+
+Box, Box! Server is meant to be used with Box, Box! (see [the wiki]() to see the instructions to use your server). It is mainly focused on two use-cases:
+- Using Box, Box! Server as a proxy when you use the web version
+- Using Box, Box! Server as a tracker-blocker: a lot of trackers are not present when doing the request to the Box, Box! Server (~ 13 to 2 trackers).
+
+If you want to deploy a **public** version of Box, Box! (which can be listed in the instances' list), then I can whitelist your website to use the official proxy so you don't have to run it too.
 
 ## License
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.en.html)  
