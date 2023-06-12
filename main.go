@@ -312,6 +312,12 @@ func getRssFeed(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(body))
 }
 
+func keepAlive(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
+	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /keepAlive")
+	fmt.Fprint(w, string("I'm still standing"))
+}
+
 func main() {
 	fmt.Println("Initializing...")
 	route := "/"
@@ -333,6 +339,7 @@ func main() {
 	router.HandleFunc(route+"documents", getSessionDocuments).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"documents/{documentPath}", getSessionDocument).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"rss/{languageCode}", getRssFeed).Methods("GET", "OPTIONS")
+	router.HandleFunc(route+"keepAlive", keepAlive).Methods("GET", "OPTIONS")
 	fmt.Println("Box, Box! server running on port " + PORT)
 	log.Fatal(http.ListenAndServe(":"+PORT, router))
 }
