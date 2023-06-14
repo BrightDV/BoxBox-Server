@@ -7,6 +7,12 @@
 [![GitHub stars](https://img.shields.io/github/stars/BrightDV/BoxBox-Server?style=for-the-badge)](https://github.com/BrightDV/BoxBox-Server/stargazers)
 [![GitHub license](https://img.shields.io/github/license/BrightDV/BoxBox-Server?style=for-the-badge)](https://github.com/BrightDV/BoxBox-Server/blob/main/LICENSE)
 
+## Instances
+
+| Host    | Server URL |
+| -------- | ------- |
+| Official  | https://boxbox-server.brightdv.repl.co |
+
 ## Installation
 At first, you need Go installed.
 
