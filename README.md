@@ -17,7 +17,7 @@ At first, you need Go installed.
 Step-by-step installation of Box, Box! server:
 ```
 git clone https://github.com/BrightDV/BoxBox-Server.git
-cd BoxBox-Server-main
+cd BoxBox-Server
 go run main.go
 ```
 That's it! Your Box, Box! server is now up and running on your device, on the port 8080 by default!
@@ -32,7 +32,7 @@ At first, Box, Box! was an Android application. Then, thanks to Flutter, Box, Bo
 
 ## Usage
 
-Box, Box! Server is meant to be used with Box, Box! (see [the wiki]() to see the instructions to use your server). It is mainly focused on two use-cases:
+Box, Box! Server is meant to be used with Box, Box! (see [the wiki](https://github.com/BrightDV/BoxBox/wiki/Host-your-own-instance-of-the-frontend) to see the instructions to use your server). It is mainly focused on two use-cases:
 - Using Box, Box! Server as a proxy when you use the web version
 - Using Box, Box! Server as a tracker-blocker: a lot of trackers are not present when doing the request to the Box, Box! Server (~ 13 to 2 trackers).
 
