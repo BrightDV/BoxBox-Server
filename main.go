@@ -26,8 +26,11 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/http/httptest"
 	"time"
 
+	"github.com/goenning/go-cache-demo/cache"
+	"github.com/goenning/go-cache-demo/cache/memory"
 	"github.com/gorilla/mux"
 )
 
@@ -42,12 +45,48 @@ var endpoint = string(tmp_)
 var DOMAIN string = "*"
 var PORT string = "8080"
 
+var storage cache.Storage
+
+func init() {
+	storage = memory.NewStorage()
+}
+
+func logger(uri string) {
+	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET "+uri)
+}
+
+func cached(duration string, contentType string, handler func(w http.ResponseWriter, r *http.Request)) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		content := storage.Get(r.RequestURI)
+		if content != nil {
+			logger(r.RequestURI)
+			w.Header().Add("Content-Type", contentType)
+			w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
+			w.Write(content)
+		} else {
+			c := httptest.NewRecorder()
+			handler(c, r)
+			for k, v := range c.HeaderMap {
+				w.Header()[k] = v
+			}
+			w.WriteHeader(c.Code)
+			content := c.Body.Bytes()
+			if d, err := time.ParseDuration(duration); err == nil {
+				storage.Set(r.RequestURI, content, d)
+			} else {
+				fmt.Printf("Page not cached. err: %s\n", err)
+			}
+			w.Write(content)
+		}
+	})
+}
+
 func getArticle(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var article any
 	articleId := mux.Vars(r)["articleId"]
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /v1/editorial/articles/"+articleId)
+	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", endpoint+"v1/editorial/articles/"+articleId, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
@@ -68,7 +107,7 @@ func getArticles(w http.ResponseWriter, r *http.Request) {
 		offset = "0"
 	}
 	tags := r.URL.Query().Get("tags")
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /v1/editorial/articles?limit=16&tags="+tags+"&offset="+offset)
+	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", endpoint+"v1/editorial/articles?limit=16&tags="+tags+"&offset="+offset, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
@@ -85,7 +124,7 @@ func getVideo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var article any
 	videoId := mux.Vars(r)["videoId"]
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /v1/video-assets/videos/"+videoId)
+	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", endpoint+"v1/video-assets/videos/"+videoId, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
@@ -110,7 +149,7 @@ func getVideos(w http.ResponseWriter, r *http.Request) {
 		offset = "0"
 	}
 	tags := r.URL.Query().Get("tags")
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /v1/video-assets/videos?limit="+limit+"&tag="+tags+"&offset="+offset)
+	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", endpoint+"v1/video-assets/videos?limit="+limit+"&tag="+tags+"&offset="+offset, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
@@ -126,7 +165,7 @@ func eventTracker(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var event any
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /v1/event-tracker")
+	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", endpoint+"v1/event-tracker", nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
@@ -144,7 +183,7 @@ func eventTrackerForOneMeeting(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var event any
 	meetingId := mux.Vars(r)["meetingId"]
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /v1/event-tracker/meeting/"+meetingId)
+	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", endpoint+"v1/event-tracker/meeting/"+meetingId, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
@@ -162,7 +201,7 @@ func getFinishedSessions(w http.ResponseWriter, r *http.Request) {
 	year := mux.Vars(r)["year"]
 	fomRaceId := mux.Vars(r)["fomRaceId"]
 	raceName := mux.Vars(r)["raceName"]
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /en/results.html/"+year+"/races/"+fomRaceId+"/"+raceName+".html")
+	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/results.html/"+year+"/races/"+fomRaceId+"/"+raceName+".html", nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
@@ -178,7 +217,7 @@ func getResultsForScraping(w http.ResponseWriter, r *http.Request) {
 	fomRaceId := mux.Vars(r)["fomRaceId"]
 	raceName := mux.Vars(r)["raceName"]
 	session := mux.Vars(r)["session"]
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /en/results.html/"+year+"/races/"+fomRaceId+"/"+raceName+"/"+session+".html")
+	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/results.html/"+year+"/races/"+fomRaceId+"/"+raceName+"/"+session+".html", nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
@@ -192,7 +231,7 @@ func getCircuitDetails(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	year := mux.Vars(r)["year"]
 	circuitName := mux.Vars(r)["circuitName"]
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /en/racing/"+year+"/"+circuitName+"/Circuit.html")
+	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/racing/"+year+"/"+circuitName+"/Circuit.html", nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
@@ -205,7 +244,7 @@ func getDriverDetails(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	driverId := mux.Vars(r)["driverId"]
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /en/drivers/"+driverId+".html")
+	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/drivers/"+driverId+".html", nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
@@ -218,7 +257,7 @@ func getTeamDetails(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	teamId := mux.Vars(r)["teamId"]
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /en/teams/"+teamId+".html")
+	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/teams/"+teamId+".html", nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
@@ -230,7 +269,7 @@ func getTeamDetails(w http.ResponseWriter, r *http.Request) {
 func getHallOfFame(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /en/drivers/hall-of-fame.html")
+	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/drivers/hall-of-fame.html", nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
@@ -243,7 +282,7 @@ func getHallOfFameDriverDetails(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	driver := mux.Vars(r)["driver"]
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /content/fom-website/en/drivers/hall-of-fame/"+driver+".html")
+	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/drivers/hall-of-fame/"+driver+".html", nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
@@ -255,7 +294,7 @@ func getHallOfFameDriverDetails(w http.ResponseWriter, r *http.Request) {
 func getSessionDocuments(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /documents")
+	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.fia.com/documents/championships/fia-formula-one-world-championship-14/season/season-2023-2042", nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
@@ -268,7 +307,7 @@ func getSessionDocument(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/pdf")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	documentPath := mux.Vars(r)["documentPath"]
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /document/"+documentPath)
+	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.fia.com/sites/default/files/decision-document/"+documentPath, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
@@ -284,7 +323,7 @@ func getRssFeed(w http.ResponseWriter, r *http.Request) {
 	if languageCode == "motorsport" {
 		languageCode = "br"
 	}
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /rss/"+languageCode)
+	logger(r.RequestURI)
 	client := &http.Client{}
 	customFeedUrls := map[string]string{
 		"fr":  "https://fr.motorsport.com",
@@ -314,7 +353,7 @@ func getRssFeed(w http.ResponseWriter, r *http.Request) {
 
 func keepAlive(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
-	fmt.Println("["+time.Now().Format("2006-01-02 15:04:05")+"]", " GET /keepAlive")
+	logger(r.RequestURI)
 	fmt.Fprint(w, string("I'm still standing"))
 }
 
@@ -323,20 +362,20 @@ func main() {
 	route := "/"
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", homeLink)
-	router.HandleFunc(route+"v1/editorial/articles", getArticles).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"v1/editorial/articles/{articleId}", getArticle).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"v1/video-assets/videos", getVideos).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"v1/video-assets/videos/{videoId}", getVideo).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"v1/event-tracker", eventTracker).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"v1/event-tracker/meeting/{meetingId}", eventTrackerForOneMeeting).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"en/results.html/{year}/races/{fomRaceId}/{raceName}.html", getFinishedSessions).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"en/results.html/{year}/races/{fomRaceId}/{raceName}/{session}.html", getResultsForScraping).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"en/racing/{year}/{circuitName}/Circuit.html", getCircuitDetails).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"en/drivers/{driverId}.html", getDriverDetails).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"en/teams/{teamId}.html", getTeamDetails).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"en/drivers/hall-of-fame.html", getHallOfFame).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"content/fom-website/en/drivers/hall-of-fame/{driver}.html", getHallOfFameDriverDetails).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"documents", getSessionDocuments).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/editorial/articles", cached("30s", "application/json", getArticles)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/editorial/articles/{articleId}", cached("5m", "application/json", getArticle)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/video-assets/videos", cached("30s", "application/json", getVideos)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/video-assets/videos/{videoId}", cached("5m", "application/json", getVideo)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/event-tracker", cached("20s", "application/json", eventTracker)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/event-tracker/meeting/{meetingId}", cached("20s", "application/json", eventTrackerForOneMeeting)).Methods("GET", "OPTIONS")
+	router.Handle(route+"en/results.html/{year}/races/{fomRaceId}/{raceName}.html", cached("120s", "application/json", getFinishedSessions)).Methods("GET", "OPTIONS")
+	router.Handle(route+"en/results.html/{year}/races/{fomRaceId}/{raceName}/{session}.html", cached("120s", "text/html; charset=utf-8", getResultsForScraping)).Methods("GET", "OPTIONS")
+	router.Handle(route+"en/racing/{year}/{circuitName}/Circuit.html", cached("168h", "text/html; charset=utf-8", getCircuitDetails)).Methods("GET", "OPTIONS")
+	router.Handle(route+"en/drivers/{driverId}.html", cached("1h", "text/html; charset=utf-8", getDriverDetails)).Methods("GET", "OPTIONS")
+	router.Handle(route+"en/teams/{teamId}.html", cached("1h", "text/html; charset=utf-8", getTeamDetails)).Methods("GET", "OPTIONS")
+	router.Handle(route+"en/drivers/hall-of-fame.html", cached("24h", "text/html; charset=utf-8", getHallOfFame)).Methods("GET", "OPTIONS")
+	router.Handle(route+"content/fom-website/en/drivers/hall-of-fame/{driver}.html", cached("24h", "text/html; charset=utf-8", getHallOfFameDriverDetails)).Methods("GET", "OPTIONS")
+	router.Handle(route+"documents", cached("30s", "text/html; charset=utf-8", getSessionDocuments)).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"documents/{documentPath}", getSessionDocument).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"rss/{languageCode}", getRssFeed).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"keepAlive", keepAlive).Methods("GET", "OPTIONS")

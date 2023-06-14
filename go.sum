@@ -1,2 +1,4 @@
+github.com/goenning/go-cache-demo v0.0.0-20170828081940-8f39646cb344 h1:7GwtR0tvXZh3TROnwBmqCxC6tGbg9l6gEtXu1hc8oKE=
+github.com/goenning/go-cache-demo v0.0.0-20170828081940-8f39646cb344/go.mod h1:cRn6dy2/9hfbBUWoIKJFo7vUNL+S9ewhjmuff9V+3HI=
 github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
 github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
