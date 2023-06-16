@@ -13,7 +13,10 @@
 | -------- | ------- |
 | Official  | https://boxbox-server.brightdv.repl.co |
 
-## Installation
+## Deployment
+### Deployment with Replit
+- See [the wiki](https://github.com/BrightDV/BoxBox-Server/wiki/Host-your-Box,-Box!-Server-with-Replit-for-free)
+### Local deployment
 At first, you need Go installed.
 
 - To install Go, follow the [installation instructions](https://go.dev/doc/install).
