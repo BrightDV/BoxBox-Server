@@ -107,9 +107,10 @@ func getArticles(w http.ResponseWriter, r *http.Request) {
 		offset = "0"
 	}
 	tags := r.URL.Query().Get("tags")
+	articleTypes := r.URL.Query().Get("articleTypes")
 	logger(r.RequestURI)
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", endpoint+"v1/editorial/articles?limit=16&tags="+tags+"&offset="+offset, nil)
+	req, _ := http.NewRequest("GET", endpoint+"v1/editorial/articles?limit=16&tags="+tags+"&offset="+offset+"&articleTypes="+articleTypes, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
