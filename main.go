@@ -375,7 +375,7 @@ func main() {
 	router.Handle(route+"en/drivers/{driverId}.html", cached("1h", "text/html; charset=utf-8", getDriverDetails)).Methods("GET", "OPTIONS")
 	router.Handle(route+"en/teams/{teamId}.html", cached("1h", "text/html; charset=utf-8", getTeamDetails)).Methods("GET", "OPTIONS")
 	router.Handle(route+"en/drivers/hall-of-fame.html", cached("24h", "text/html; charset=utf-8", getHallOfFame)).Methods("GET", "OPTIONS")
-	router.Handle(route+"content/fom-website/en/drivers/hall-of-fame/{driver}.html", cached("24h", "text/html; charset=utf-8", getHallOfFameDriverDetails)).Methods("GET", "OPTIONS")
+	router.Handle(route+"en/drivers/hall-of-fame/{driver}.html", cached("24h", "text/html; charset=utf-8", getHallOfFameDriverDetails)).Methods("GET", "OPTIONS")
 	router.Handle(route+"documents", cached("30s", "text/html; charset=utf-8", getSessionDocuments)).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"documents/{documentPath}", getSessionDocument).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"rss/{languageCode}", getRssFeed).Methods("GET", "OPTIONS")
@@ -383,3 +383,4 @@ func main() {
 	fmt.Println("Box, Box! server running on port " + PORT)
 	log.Fatal(http.ListenAndServe(":"+PORT, router))
 }
+
