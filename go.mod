@@ -1,4 +1,4 @@
-module example/hello
+module github.com/BrightDV/BoxBox-Server
 
 go 1.20
 
