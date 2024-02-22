@@ -1,22 +1,3 @@
-/*
- *  This file is part of BoxBox-Server (https://github.com/BrightDV/BoxBox-Server).
- *
- * BoxBox-Server is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * BoxBox-Server is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with BoxBox-Server.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Copyright (c) 2022-2023, BrightDV
- */
-
 package main
 
 import (
@@ -29,6 +10,7 @@ import (
 	"net/http/httptest"
 	"time"
 
+	"github.com/carlmjohnson/gateway"
 	"github.com/goenning/go-cache-demo/cache"
 	"github.com/goenning/go-cache-demo/cache/memory"
 	"github.com/gorilla/mux"
@@ -352,17 +334,14 @@ func getRssFeed(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(body))
 }
 
-func keepAlive(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
-	logger(r.RequestURI)
-	fmt.Fprint(w, string("I'm still standing"))
-}
-
 func main() {
+
+	listener := gateway.ListenAndServe
+
 	fmt.Println("Initializing...")
-	route := "/"
+	route := "/api/"
 	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/", homeLink)
+	router.HandleFunc(route, homeLink)
 	router.Handle(route+"v1/editorial/articles", cached("30s", "application/json", getArticles)).Methods("GET", "OPTIONS")
 	router.Handle(route+"v1/editorial/articles/{articleId}", cached("5m", "application/json", getArticle)).Methods("GET", "OPTIONS")
 	router.Handle(route+"v1/video-assets/videos", cached("30s", "application/json", getVideos)).Methods("GET", "OPTIONS")
@@ -379,7 +358,7 @@ func main() {
 	router.Handle(route+"documents", cached("30s", "text/html; charset=utf-8", getSessionDocuments)).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"documents/{documentPath}", getSessionDocument).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"rss/{languageCode}", getRssFeed).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"keepAlive", keepAlive).Methods("GET", "OPTIONS")
-	fmt.Println("Box, Box! server running on port " + PORT)
-	log.Fatal(http.ListenAndServe(":"+PORT, router))
+	//router.HandleFunc(route+"keepAlive", keepAlive).Methods("GET", "OPTIONS") // not needed with Netlify
+	fmt.Println("Box, Box! server running!")
+	log.Fatal(listener("", router))
 }
