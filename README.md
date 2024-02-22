@@ -11,7 +11,7 @@
 
 | Host    | Server URL |
 | -------- | ------- |
-| Official  | https://boxbox-server.brightdv.repl.co |
+| Official  | https://boxbox-server.netlify.app/api/ |
 
 ## Deployment
 ### Deployment with Replit
