@@ -14,8 +14,11 @@
 | Official  | https://boxbox-server.netlify.app/api/ |
 
 ## Deployment
-### Deployment with Replit
-- See [the wiki](https://github.com/BrightDV/BoxBox-Server/wiki/Host-your-Box,-Box!-Server-with-Replit-for-free)
+### Deployment with Netlify
+- See [the wiki](https://github.com/BrightDV/BoxBox-Server/wiki/Host-your-Box,-Box!-Server-with-Netlify-for-free)
+
+### [Deprecated] Deployment with Replit
+- See [the wiki](https://github.com/BrightDV/BoxBox-Server/wiki/%5BDeprecated%5D-Host-your-Box,-Box!-Server-with-Replit-for-free)
 ### Local deployment
 At first, you need Go installed.
 
