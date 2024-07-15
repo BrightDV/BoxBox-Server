@@ -47,6 +47,8 @@ var PORT string = "8080"
 
 var storage cache.Storage
 
+type Formula1 struct{}
+
 func init() {
 	storage = memory.NewStorage()
 }
@@ -66,7 +68,7 @@ func cached(duration string, contentType string, handler func(w http.ResponseWri
 		} else {
 			c := httptest.NewRecorder()
 			handler(c, r)
-			for k, v := range c.HeaderMap {
+			for k, v := range c.Header() {
 				w.Header()[k] = v
 			}
 			w.WriteHeader(c.Code)
@@ -81,7 +83,7 @@ func cached(duration string, contentType string, handler func(w http.ResponseWri
 	})
 }
 
-func getArticle(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getArticle(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var article any
@@ -98,7 +100,7 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(article)
 }
 
-func getArticles(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getArticles(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var articles any
@@ -120,7 +122,7 @@ func getArticles(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(articles)
 }
 
-func getVideo(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getVideo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var article any
@@ -137,7 +139,7 @@ func getVideo(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(article)
 }
 
-func getVideos(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getVideos(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var articles any
@@ -162,7 +164,7 @@ func getVideos(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(articles)
 }
 
-func eventTracker(w http.ResponseWriter, r *http.Request) {
+func (Formula1) eventTracker(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var event any
@@ -179,7 +181,7 @@ func eventTracker(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(event)
 }
 
-func eventTrackerForOneMeeting(w http.ResponseWriter, r *http.Request) {
+func (Formula1) eventTrackerForOneMeeting(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var event any
@@ -196,7 +198,7 @@ func eventTrackerForOneMeeting(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(event)
 }
 
-func getRaceResults(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getRaceResults(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var results any
@@ -213,7 +215,7 @@ func getRaceResults(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(results)
 }
 
-func getQualificationResults(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getQualificationResults(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var results any
@@ -230,7 +232,7 @@ func getQualificationResults(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(results)
 }
 
-func getFreePracticeResults(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getFreePracticeResults(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var results any
@@ -248,7 +250,7 @@ func getFreePracticeResults(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(results)
 }
 
-func getSprintQualifyingResults(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getSprintQualifyingResults(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var results any
@@ -265,7 +267,7 @@ func getSprintQualifyingResults(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(results)
 }
 
-func getSprintResults(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getSprintResults(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var results any
@@ -282,7 +284,7 @@ func getSprintResults(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(results)
 }
 
-func getStartingGrid(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getStartingGrid(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var grid any
@@ -299,7 +301,7 @@ func getStartingGrid(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(grid)
 }
 
-func getDriverStandings(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getDriverStandings(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var standings any
@@ -315,7 +317,7 @@ func getDriverStandings(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(standings)
 }
 
-func getTeamStandings(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getTeamStandings(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var standings any
@@ -331,7 +333,7 @@ func getTeamStandings(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(standings)
 }
 
-func getSchedule(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getSchedule(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var schedule any
@@ -347,7 +349,7 @@ func getSchedule(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(schedule)
 }
 
-func getFinishedSessions(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getFinishedSessions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	year := mux.Vars(r)["year"]
@@ -362,7 +364,7 @@ func getFinishedSessions(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(body))
 }
 
-func getResultsForScraping(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getResultsForScraping(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	year := mux.Vars(r)["year"]
@@ -378,7 +380,7 @@ func getResultsForScraping(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(body))
 }
 
-func getCircuitDetails(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getCircuitDetails(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	year := mux.Vars(r)["year"]
@@ -392,7 +394,7 @@ func getCircuitDetails(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(body))
 }
 
-func getDriverDetails(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getDriverDetails(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	driverId := mux.Vars(r)["driverId"]
@@ -405,7 +407,7 @@ func getDriverDetails(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(body))
 }
 
-func getTeamDetails(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getTeamDetails(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	teamId := mux.Vars(r)["teamId"]
@@ -418,7 +420,7 @@ func getTeamDetails(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(body))
 }
 
-func getHallOfFame(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getHallOfFame(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	logger(r.RequestURI)
@@ -430,7 +432,7 @@ func getHallOfFame(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(body))
 }
 
-func getHallOfFameDriverDetails(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getHallOfFameDriverDetails(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	driver := mux.Vars(r)["driver"]
@@ -443,7 +445,7 @@ func getHallOfFameDriverDetails(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(body))
 }
 
-func getSessionDocuments(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getSessionDocuments(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	logger(r.RequestURI)
@@ -455,7 +457,7 @@ func getSessionDocuments(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(body))
 }
 
-func getSessionDocument(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getSessionDocument(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/pdf")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	documentPath := mux.Vars(r)["documentPath"]
@@ -468,7 +470,7 @@ func getSessionDocument(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, string(body))
 }
 
-func getRssFeed(w http.ResponseWriter, r *http.Request) {
+func (Formula1) getRssFeed(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/xml; charset=utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	languageCode := mux.Vars(r)["languageCode"]
@@ -514,32 +516,59 @@ func main() {
 	route := "/"
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/", homeLink)
-	router.Handle(route+"v1/editorial/articles", cached("30s", "application/json", getArticles)).Methods("GET", "OPTIONS")
-	router.Handle(route+"v1/editorial/articles/{articleId}", cached("5m", "application/json", getArticle)).Methods("GET", "OPTIONS")
-	router.Handle(route+"v1/video-assets/videos", cached("30s", "application/json", getVideos)).Methods("GET", "OPTIONS")
-	router.Handle(route+"v1/video-assets/videos/{videoId}", cached("5m", "application/json", getVideo)).Methods("GET", "OPTIONS")
-	router.Handle(route+"v1/event-tracker", cached("20s", "application/json", eventTracker)).Methods("GET", "OPTIONS")
-	router.Handle(route+"v1/event-tracker/meeting/{meetingId}", cached("20s", "application/json", eventTrackerForOneMeeting)).Methods("GET", "OPTIONS")
-	router.Handle(route+"v1/fom-results/race?meeting={meetingId}", cached("20s", "application/json", getRaceResults)).Methods("GET", "OPTIONS")
-	router.Handle(route+"v1/fom-results/qualifying?meeting={meetingId}", cached("20s", "application/json", getQualificationResults)).Methods("GET", "OPTIONS")
-	router.Handle(route+"v1/fom-results/practice?meeting={meetingId}&session={sessionId}", cached("20s", "application/json", getFreePracticeResults)).Methods("GET", "OPTIONS")
-	router.Handle(route+"v1/fom-results/sprint-shootout?meeting={meetingId}", cached("20s", "application/json", getSprintQualifyingResults)).Methods("GET", "OPTIONS")
-	router.Handle(route+"v1/fom-results/sprint?meeting={meetingId}", cached("20s", "application/json", getSprintResults)).Methods("GET", "OPTIONS")
-	router.Handle(route+"v1/fom-results/starting-grid?meeting={meetingId}", cached("20s", "application/json", getStartingGrid)).Methods("GET", "OPTIONS")
-	router.Handle(route+"v1/editorial-driverlisting/listing", cached("20s", "application/json", getDriverStandings)).Methods("GET", "OPTIONS")
-	router.Handle(route+"v1/editorial-constructorlisting/listing", cached("20s", "application/json", getTeamStandings)).Methods("GET", "OPTIONS")
-	router.Handle(route+"v1/editorial-eventlisting/events", cached("20s", "application/json", getSchedule)).Methods("GET", "OPTIONS")
-	router.Handle(route+"en/results.html/{year}/races/{fomRaceId}/{raceName}.html", cached("120s", "application/json", getFinishedSessions)).Methods("GET", "OPTIONS")
-	router.Handle(route+"en/results.html/{year}/races/{fomRaceId}/{raceName}/{session}.html", cached("120s", "text/html; charset=utf-8", getResultsForScraping)).Methods("GET", "OPTIONS")
-	router.Handle(route+"en/racing/{year}/{circuitName}/Circuit.html", cached("168h", "text/html; charset=utf-8", getCircuitDetails)).Methods("GET", "OPTIONS")
-	router.Handle(route+"en/drivers/{driverId}.html", cached("1h", "text/html; charset=utf-8", getDriverDetails)).Methods("GET", "OPTIONS")
-	router.Handle(route+"en/teams/{teamId}.html", cached("1h", "text/html; charset=utf-8", getTeamDetails)).Methods("GET", "OPTIONS")
-	router.Handle(route+"en/drivers/hall-of-fame.html", cached("24h", "text/html; charset=utf-8", getHallOfFame)).Methods("GET", "OPTIONS")
-	router.Handle(route+"en/drivers/hall-of-fame/{driver}.html", cached("24h", "text/html; charset=utf-8", getHallOfFameDriverDetails)).Methods("GET", "OPTIONS")
-	router.Handle(route+"documents", cached("30s", "text/html; charset=utf-8", getSessionDocuments)).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"documents/{documentPath}", getSessionDocument).Methods("GET", "OPTIONS")
-	router.HandleFunc(route+"rss/{languageCode}", getRssFeed).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"keepAlive", keepAlive).Methods("GET", "OPTIONS")
+	// deprecated: not championship-specific
+	router.Handle(route+"v1/editorial/articles", cached("30s", "application/json", Formula1{}.getArticles)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/editorial/articles/{articleId}", cached("5m", "application/json", Formula1{}.getArticle)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/video-assets/videos", cached("30s", "application/json", Formula1{}.getVideos)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/video-assets/videos/{videoId}", cached("5m", "application/json", Formula1{}.getVideo)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/event-tracker", cached("20s", "application/json", Formula1{}.eventTracker)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/event-tracker/meeting/{meetingId}", cached("20s", "application/json", Formula1{}.eventTrackerForOneMeeting)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/fom-results/race?meeting={meetingId}", cached("20s", "application/json", Formula1{}.getRaceResults)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/fom-results/qualifying?meeting={meetingId}", cached("20s", "application/json", Formula1{}.getQualificationResults)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/fom-results/practice?meeting={meetingId}&session={sessionId}", cached("20s", "application/json", Formula1{}.getFreePracticeResults)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/fom-results/sprint-shootout?meeting={meetingId}", cached("20s", "application/json", Formula1{}.getSprintQualifyingResults)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/fom-results/sprint?meeting={meetingId}", cached("20s", "application/json", Formula1{}.getSprintResults)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/fom-results/starting-grid?meeting={meetingId}", cached("20s", "application/json", Formula1{}.getStartingGrid)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/editorial-driverlisting/listing", cached("20s", "application/json", Formula1{}.getDriverStandings)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/editorial-constructorlisting/listing", cached("20s", "application/json", Formula1{}.getTeamStandings)).Methods("GET", "OPTIONS")
+	router.Handle(route+"v1/editorial-eventlisting/events", cached("20s", "application/json", Formula1{}.getSchedule)).Methods("GET", "OPTIONS")
+	router.Handle(route+"en/results.html/{year}/races/{fomRaceId}/{raceName}.html", cached("120s", "application/json", Formula1{}.getFinishedSessions)).Methods("GET", "OPTIONS")
+	router.Handle(route+"en/results.html/{year}/races/{fomRaceId}/{raceName}/{session}.html", cached("120s", "text/html; charset=utf-8", Formula1{}.getResultsForScraping)).Methods("GET", "OPTIONS")
+	router.Handle(route+"en/racing/{year}/{circuitName}/Circuit.html", cached("168h", "text/html; charset=utf-8", Formula1{}.getCircuitDetails)).Methods("GET", "OPTIONS")
+	router.Handle(route+"en/drivers/{driverId}.html", cached("1h", "text/html; charset=utf-8", Formula1{}.getDriverDetails)).Methods("GET", "OPTIONS")
+	router.Handle(route+"en/teams/{teamId}.html", cached("1h", "text/html; charset=utf-8", Formula1{}.getTeamDetails)).Methods("GET", "OPTIONS")
+	router.Handle(route+"en/drivers/hall-of-fame.html", cached("24h", "text/html; charset=utf-8", Formula1{}.getHallOfFame)).Methods("GET", "OPTIONS")
+	router.Handle(route+"en/drivers/hall-of-fame/{driver}.html", cached("24h", "text/html; charset=utf-8", Formula1{}.getHallOfFameDriverDetails)).Methods("GET", "OPTIONS")
+	router.Handle(route+"documents", cached("30s", "text/html; charset=utf-8", Formula1{}.getSessionDocuments)).Methods("GET", "OPTIONS")
+	router.HandleFunc(route+"documents/{documentPath}", Formula1{}.getSessionDocument).Methods("GET", "OPTIONS")
+	router.HandleFunc(route+"rss/{languageCode}", Formula1{}.getRssFeed).Methods("GET", "OPTIONS")
+	// F1 championship
+	router.Handle(route+"f1/v1/editorial/articles", cached("30s", "application/json", Formula1{}.getArticles)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v1/editorial/articles/{articleId}", cached("5m", "application/json", Formula1{}.getArticle)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v1/video-assets/videos", cached("30s", "application/json", Formula1{}.getVideos)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v1/video-assets/videos/{videoId}", cached("5m", "application/json", Formula1{}.getVideo)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v1/event-tracker", cached("20s", "application/json", Formula1{}.eventTracker)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v1/event-tracker/meeting/{meetingId}", cached("20s", "application/json", Formula1{}.eventTrackerForOneMeeting)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v1/fom-results/race?meeting={meetingId}", cached("20s", "application/json", Formula1{}.getRaceResults)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v1/fom-results/qualifying?meeting={meetingId}", cached("20s", "application/json", Formula1{}.getQualificationResults)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v1/fom-results/practice?meeting={meetingId}&session={sessionId}", cached("20s", "application/json", Formula1{}.getFreePracticeResults)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v1/fom-results/sprint-shootout?meeting={meetingId}", cached("20s", "application/json", Formula1{}.getSprintQualifyingResults)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v1/fom-results/sprint?meeting={meetingId}", cached("20s", "application/json", Formula1{}.getSprintResults)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v1/fom-results/starting-grid?meeting={meetingId}", cached("20s", "application/json", Formula1{}.getStartingGrid)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v1/editorial-driverlisting/listing", cached("20s", "application/json", Formula1{}.getDriverStandings)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v1/editorial-constructorlisting/listing", cached("20s", "application/json", Formula1{}.getTeamStandings)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v1/editorial-eventlisting/events", cached("20s", "application/json", Formula1{}.getSchedule)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/en/results.html/{year}/races/{fomRaceId}/{raceName}.html", cached("120s", "application/json", Formula1{}.getFinishedSessions)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/en/results.html/{year}/races/{fomRaceId}/{raceName}/{session}.html", cached("120s", "text/html; charset=utf-8", Formula1{}.getResultsForScraping)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/en/racing/{year}/{circuitName}/Circuit.html", cached("168h", "text/html; charset=utf-8", Formula1{}.getCircuitDetails)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/en/drivers/{driverId}.html", cached("1h", "text/html; charset=utf-8", Formula1{}.getDriverDetails)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/en/teams/{teamId}.html", cached("1h", "text/html; charset=utf-8", Formula1{}.getTeamDetails)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/en/drivers/hall-of-fame.html", cached("24h", "text/html; charset=utf-8", Formula1{}.getHallOfFame)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/en/drivers/hall-of-fame/{driver}.html", cached("24h", "text/html; charset=utf-8", Formula1{}.getHallOfFameDriverDetails)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/documents", cached("30s", "text/html; charset=utf-8", Formula1{}.getSessionDocuments)).Methods("GET", "OPTIONS")
+	router.HandleFunc(route+"f1/documents/{documentPath}", Formula1{}.getSessionDocument).Methods("GET", "OPTIONS")
+	router.HandleFunc(route+"f1/rss/{languageCode}", Formula1{}.getRssFeed).Methods("GET", "OPTIONS")
 	fmt.Println("Box, Box! server running on port " + PORT)
 	log.Fatal(http.ListenAndServe(":"+PORT, router))
 }
