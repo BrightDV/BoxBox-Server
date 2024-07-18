@@ -64,6 +64,7 @@ func cached(duration string, contentType string, handler func(w http.ResponseWri
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		content := storage.Get(r.RequestURI)
 		if content != nil {
+			logger(r.RequestURI)
 			w.Header().Add("Content-Type", contentType)
 			w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 			w.Write(content)
@@ -680,7 +681,6 @@ func (FormulaE) getTeamStandings(w http.ResponseWriter, r *http.Request) {
 }
 
 func (FormulaE) getSchedule(w http.ResponseWriter, r *http.Request) {
-	logger("efefs")
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	var schedule any
@@ -770,14 +770,14 @@ func main() {
 	router.Handle(route+"fe/content/formula-e/text/EN/page={page}&pageSize=16&tagNames=content-type%3Anews&tagExpression=&playlistTypeRestriction=&playlistId=&detail=&size=16&championshipId=&sort=", cached("30s", "application/json", FormulaE{}.getArticles)).Methods("GET", "OPTIONS")
 	router.Handle(route+"fe/content/formula-e/text/EN/{articleId}", cached("5m", "application/json", FormulaE{}.getArticle)).Methods("GET", "OPTIONS")
 	router.Handle(route+"fe/content/formula-e/playlist/EN/15/page={page}&pageSize=$limit&detail=DETAILED&size={limit}", cached("30s", "application/json", FormulaE{}.getVideos)).Methods("GET", "OPTIONS")
+	router.Handle(route+"fe/formula-e/v1/races/championshipId={championshipId}", cached("5m", "application/json", FormulaE{}.getSchedule)).Methods("GET", "OPTIONS")
 	router.Handle(route+"fe/formula-e/v1/races/{raceId}", cached("30s", "application/json", FormulaE{}.getRaceDetails)).Methods("GET", "OPTIONS")
 	router.Handle(route+"fe/formula-e/v1/races/{raceId}/sessions", cached("3h", "application/json", FormulaE{}.getSessions)).Methods("GET", "OPTIONS")
-	router.Handle(route+"fe/content/formula-e/EN/contentTypes=video&contentTypes=news&page=0&pageSize=10&references=FORMULA_E_RACE:{raceId}&onlyRestrictedContent=false&detail=DETAILED", cached("30s", "application/json", FormulaE{}.getRaceArticles)).Methods("GET", "OPTIONS")
 	router.Handle(route+"fe/formula-e/v1/races/{raceId}/sessions/{sessionId}/results", cached("30s", "application/json", FormulaE{}.getSessionResults)).Methods("GET", "OPTIONS")
+	router.Handle(route+"fe/content/formula-e/EN/contentTypes=video&contentTypes=news&page=0&pageSize=10&references=FORMULA_E_RACE:{raceId}&onlyRestrictedContent=false&detail=DETAILED", cached("30s", "application/json", FormulaE{}.getRaceArticles)).Methods("GET", "OPTIONS")
 	router.Handle(route+"fe/content/formula-e/photo/en/references=FORMULA_E_RACE:{raceId}&tagNames=race:bg-image", cached("24h", "application/json", FormulaE{}.getCircuitImageDetails)).Methods("GET", "OPTIONS")
 	router.Handle(route+"fe/formula-e/v1/standings/drivers/championshipId={championshipId}", cached("1m", "application/json", FormulaE{}.getDriverStandings)).Methods("GET", "OPTIONS")
 	router.Handle(route+"fe/formula-e/v1/standings/teams/championshipId={championshipId}", cached("1m", "application/json", FormulaE{}.getTeamStandings)).Methods("GET", "OPTIONS")
-	router.Handle(route+"fe/formula-e/v1/races/championshipId={championshipId}", cached("5m", "application/json", FormulaE{}.getSchedule)).Methods("GET", "OPTIONS")
 	router.Handle(route+"fe/formula-e/v1/championships/latest", cached("168h", "application/json", FormulaE{}.getLatestChampionship)).Methods("GET", "OPTIONS")
 	fmt.Println("Box, Box! server running on port " + PORT)
 	log.Fatal(http.ListenAndServe(":"+PORT, router))
