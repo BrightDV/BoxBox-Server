@@ -524,6 +524,19 @@ func (FormulaE) getArticle(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(article)
 }
 
+func (FormulaE) getArticleAsHtml(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
+	articleId := mux.Vars(r)["articleId"]
+	logger(r.RequestURI)
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", "https://fiaformulae.com/en/news/"+articleId, nil)
+	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	resp, _ := client.Do(req)
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Fprint(w, string(body))
+}
+
 func (FormulaE) getArticles(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
@@ -557,7 +570,7 @@ func (FormulaE) getVideos(w http.ResponseWriter, r *http.Request) {
 	}
 	logger(r.RequestURI)
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", fEEndpoint+"content/formula-e/playlist/EN/15?page="+page+"&pageSize=$limit&detail=DETAILED&size="+limit, nil)
+	req, _ := http.NewRequest("GET", fEEndpoint+"content/formula-e/playlist/EN/15?page="+page+"&pageSize="+limit+"&detail=DETAILED&size="+limit, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
 	req.Header.Set("Accept", "application/json")
 	resp, _ := client.Do(req)
@@ -566,7 +579,6 @@ func (FormulaE) getVideos(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(articles)
 }
 
-// TODO
 func (FormulaE) getRaceDetails(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
@@ -767,9 +779,10 @@ func main() {
 	router.HandleFunc(route+"f1/documents/{documentPath}", Formula1{}.getSessionDocument).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"f1/rss/{languageCode}", Formula1{}.getRssFeed).Methods("GET", "OPTIONS")
 	// FE championship
-	router.Handle(route+"fe/content/formula-e/text/EN/page={page}&pageSize=16&tagNames=content-type%3Anews&tagExpression=&playlistTypeRestriction=&playlistId=&detail=&size=16&championshipId=&sort=", cached("30s", "application/json", FormulaE{}.getArticles)).Methods("GET", "OPTIONS")
+	router.Handle(route+"fe/content/formula-e/text/EN/page={page}&pageSize=16&tagNames=content-type:news&tagExpression=&playlistTypeRestriction=&playlistId=&detail=&size=16&championshipId=&sort=", cached("30s", "application/json", FormulaE{}.getArticles)).Methods("GET", "OPTIONS")
 	router.Handle(route+"fe/content/formula-e/text/EN/{articleId}", cached("5m", "application/json", FormulaE{}.getArticle)).Methods("GET", "OPTIONS")
-	router.Handle(route+"fe/content/formula-e/playlist/EN/15/page={page}&pageSize=$limit&detail=DETAILED&size={limit}", cached("30s", "application/json", FormulaE{}.getVideos)).Methods("GET", "OPTIONS")
+	router.Handle(route+"fe/en/news/{articleId}", cached("5m", "application/json", FormulaE{}.getArticleAsHtml)).Methods("GET", "OPTIONS")
+	router.Handle(route+"fe/content/formula-e/playlist/EN/15/page={page}&pageSize={limit}&detail=DETAILED&size={limit}", cached("30s", "application/json", FormulaE{}.getVideos)).Methods("GET", "OPTIONS")
 	router.Handle(route+"fe/formula-e/v1/races/championshipId={championshipId}", cached("5m", "application/json", FormulaE{}.getSchedule)).Methods("GET", "OPTIONS")
 	router.Handle(route+"fe/formula-e/v1/races/{raceId}", cached("30s", "application/json", FormulaE{}.getRaceDetails)).Methods("GET", "OPTIONS")
 	router.Handle(route+"fe/formula-e/v1/races/{raceId}/sessions", cached("3h", "application/json", FormulaE{}.getSessions)).Methods("GET", "OPTIONS")
