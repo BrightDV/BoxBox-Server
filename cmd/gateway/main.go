@@ -305,6 +305,109 @@ func (Formula1) getStartingGrid(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(grid)
 }
 
+func (Formula1) getRaceResultsV2(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
+	var results any
+	meetingId := mux.Vars(r)["meetingId"]
+	logger(r.RequestURI)
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/race?meeting="+meetingId, nil)
+	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("apikey", apikey)
+	req.Header.Set("locale", "en")
+	resp, _ := client.Do(req)
+	body, _ := io.ReadAll(resp.Body)
+	json.Unmarshal(body, &results)
+	json.NewEncoder(w).Encode(results)
+}
+
+func (Formula1) getQualificationResultsV2(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
+	var results any
+	meetingId := mux.Vars(r)["meetingId"]
+	logger(r.RequestURI)
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/qualifying?meeting="+meetingId, nil)
+	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("apikey", apikey)
+	req.Header.Set("locale", "en")
+	resp, _ := client.Do(req)
+	body, _ := io.ReadAll(resp.Body)
+	json.Unmarshal(body, &results)
+	json.NewEncoder(w).Encode(results)
+}
+
+func (Formula1) getFreePracticeResultsV2(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
+	var results any
+	meetingId := mux.Vars(r)["meetingId"]
+	sessionId := mux.Vars(r)["sessionId"]
+	logger(r.RequestURI)
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/practice?meeting="+meetingId+"&session="+sessionId, nil)
+	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("apikey", apikey)
+	req.Header.Set("locale", "en")
+	resp, _ := client.Do(req)
+	body, _ := io.ReadAll(resp.Body)
+	json.Unmarshal(body, &results)
+	json.NewEncoder(w).Encode(results)
+}
+
+func (Formula1) getSprintQualifyingResultsV2(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
+	var results any
+	meetingId := mux.Vars(r)["meetingId"]
+	logger(r.RequestURI)
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/sprint-shootout?meeting="+meetingId, nil)
+	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("apikey", apikey)
+	req.Header.Set("locale", "en")
+	resp, _ := client.Do(req)
+	body, _ := io.ReadAll(resp.Body)
+	json.Unmarshal(body, &results)
+	json.NewEncoder(w).Encode(results)
+}
+
+func (Formula1) getSprintResultsV2(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
+	var results any
+	meetingId := mux.Vars(r)["meetingId"]
+	logger(r.RequestURI)
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/sprint?meeting="+meetingId, nil)
+	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("apikey", apikey)
+	req.Header.Set("locale", "en")
+	resp, _ := client.Do(req)
+	body, _ := io.ReadAll(resp.Body)
+	json.Unmarshal(body, &results)
+	json.NewEncoder(w).Encode(results)
+}
+
+func (Formula1) getStartingGridV2(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
+	var grid any
+	meetingId := mux.Vars(r)["meetingId"]
+	logger(r.RequestURI)
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/starting-grid?meeting="+meetingId, nil)
+	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("apikey", apikey)
+	req.Header.Set("locale", "en")
+	resp, _ := client.Do(req)
+	body, _ := io.ReadAll(resp.Body)
+	json.Unmarshal(body, &grid)
+	json.NewEncoder(w).Encode(grid)
+}
+
 func (Formula1) getDriverStandings(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
@@ -724,12 +827,6 @@ func (FormulaE) getLatestChampionship(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(schedule)
 }
 
-func keepAlive(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
-	logger(r.RequestURI)
-	fmt.Fprint(w, string("I'm still standing"))
-}
-
 func main() {
 
 	listener := gateway.ListenAndServe
@@ -781,6 +878,14 @@ func main() {
 	router.Handle(route+"f1/documents", cached("30s", "text/html; charset=utf-8", Formula1{}.getSessionDocuments)).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"f1/documents/{documentPath}", Formula1{}.getSessionDocument).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"f1/rss/{languageCode}", Formula1{}.getRssFeed).Methods("GET", "OPTIONS")
+	// v2 routes
+	router.Handle(route+"f1/v2/fom-results/race/meeting={meetingId}", cached("20s", "application/json", Formula1{}.getRaceResultsV2)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v2/fom-results/qualifying/meeting={meetingId}", cached("20s", "application/json", Formula1{}.getQualificationResultsV2)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v2/fom-results/practice/meeting={meetingId}&session={sessionId}", cached("20s", "application/json", Formula1{}.getFreePracticeResultsV2)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v2/fom-results/sprint-shootout/meeting={meetingId}", cached("20s", "application/json", Formula1{}.getSprintQualifyingResultsV2)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v2/fom-results/sprint/meeting={meetingId}", cached("20s", "application/json", Formula1{}.getSprintResultsV2)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v2/fom-results/starting-grid/meeting={meetingId}", cached("20s", "application/json", Formula1{}.getStartingGridV2)).Methods("GET", "OPTIONS")
+
 	// FE championship
 	router.Handle(route+"fe/content/formula-e/text/EN/page={page}&pageSize=16&tagNames=content-type:news&tagExpression=&playlistTypeRestriction=&playlistId=&detail=&size=16&championshipId=&sort=", cached("30s", "application/json", FormulaE{}.getArticles)).Methods("GET", "OPTIONS")
 	router.Handle(route+"fe/content/formula-e/text/EN/{articleId}", cached("5m", "application/json", FormulaE{}.getArticle)).Methods("GET", "OPTIONS")
