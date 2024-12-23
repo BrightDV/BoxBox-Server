@@ -38,7 +38,7 @@ func homeLink(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Checkout the Android app on GitHub at https://github.com/BrightDV/BoxBox")
 }
 
-var tmp, _ = base64.StdEncoding.DecodeString("cVBnUFBSSnlHQ0lQeEZUM2VsNE1GN3RoWEh5SkN6QVA=")
+var tmp, _ = base64.StdEncoding.DecodeString("eFo3QU9PRFNqaVFhZExzSVlXZWZRcnBDU1FWRGJIR0M=")
 var apikey = string(tmp)
 var tmp_, _ = base64.StdEncoding.DecodeString("aHR0cHM6Ly9hcGkuZm9ybXVsYTEuY29tLw==")
 var f1Endpoint = string(tmp_)
