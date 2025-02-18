@@ -312,7 +312,7 @@ func (Formula1) getRaceResultsV2(w http.ResponseWriter, r *http.Request) {
 	meetingId := mux.Vars(r)["meetingId"]
 	logger(r.RequestURI)
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/race?meeting="+meetingId, nil)
+	req, _ := http.NewRequest("GET", f1Endpoint+"v2/fom-results/race?meeting="+meetingId, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
@@ -329,7 +329,7 @@ func (Formula1) getQualificationResultsV2(w http.ResponseWriter, r *http.Request
 	meetingId := mux.Vars(r)["meetingId"]
 	logger(r.RequestURI)
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/qualifying?meeting="+meetingId, nil)
+	req, _ := http.NewRequest("GET", f1Endpoint+"v2/fom-results/qualifying?meeting="+meetingId, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
@@ -347,7 +347,7 @@ func (Formula1) getFreePracticeResultsV2(w http.ResponseWriter, r *http.Request)
 	sessionId := mux.Vars(r)["sessionId"]
 	logger(r.RequestURI)
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/practice?meeting="+meetingId+"&session="+sessionId, nil)
+	req, _ := http.NewRequest("GET", f1Endpoint+"v2/fom-results/practice?meeting="+meetingId+"&session="+sessionId, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
@@ -364,7 +364,7 @@ func (Formula1) getSprintQualifyingResultsV2(w http.ResponseWriter, r *http.Requ
 	meetingId := mux.Vars(r)["meetingId"]
 	logger(r.RequestURI)
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/sprint-shootout?meeting="+meetingId, nil)
+	req, _ := http.NewRequest("GET", f1Endpoint+"v2/fom-results/sprint-shootout?meeting="+meetingId, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
@@ -381,7 +381,7 @@ func (Formula1) getSprintResultsV2(w http.ResponseWriter, r *http.Request) {
 	meetingId := mux.Vars(r)["meetingId"]
 	logger(r.RequestURI)
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/sprint?meeting="+meetingId, nil)
+	req, _ := http.NewRequest("GET", f1Endpoint+"v2/fom-results/sprint?meeting="+meetingId, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
@@ -398,7 +398,7 @@ func (Formula1) getStartingGridV2(w http.ResponseWriter, r *http.Request) {
 	meetingId := mux.Vars(r)["meetingId"]
 	logger(r.RequestURI)
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/starting-grid?meeting="+meetingId, nil)
+	req, _ := http.NewRequest("GET", f1Endpoint+"v2/fom-results/starting-grid?meeting="+meetingId, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
