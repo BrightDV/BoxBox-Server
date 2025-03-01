@@ -45,7 +45,7 @@ var f1Endpoint = string(tmp_)
 var tmp__, _ = base64.StdEncoding.DecodeString("aHR0cHM6Ly9hcGkuZm9ybXVsYS1lLnB1bHNlbGl2ZS5jb20v")
 var fEEndpoint = string(tmp__)
 var DOMAIN string = "*"
-var PORT string = "35005"
+var PORT string = "8080"
 
 var storage cache.Storage
 
@@ -556,7 +556,7 @@ func (Formula1) getSessionDocuments(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	logger(r.RequestURI)
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "https://www.fia.com/documents/championships/fia-formula-one-world-championship-14/season/season-2024-2043", nil)
+	req, _ := http.NewRequest("GET", "https://www.fia.com/documents/championships/fia-formula-one-world-championship-14/season/season-2025-2071", nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
