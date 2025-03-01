@@ -569,7 +569,7 @@ func (Formula1) getSessionDocument(w http.ResponseWriter, r *http.Request) {
 	documentPath := mux.Vars(r)["documentPath"]
 	logger(r.RequestURI)
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "https://www.fia.com/sites/default/files/decision-document/"+documentPath, nil)
+	req, _ := http.NewRequest("GET", "https://www.fia.com/system/files/decision-document/"+documentPath, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
