@@ -532,7 +532,7 @@ func (Formula1) getHallOfFame(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	logger(r.RequestURI)
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/drivers/hall-of-fame.html", nil)
+	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/drivers/hall-of-fame", nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
@@ -543,9 +543,10 @@ func (Formula1) getHallOfFameDriverDetails(w http.ResponseWriter, r *http.Reques
 	w.Header().Add("Content-Type", "text/html; charset=utf-8")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
 	driver := mux.Vars(r)["driver"]
+	id := mux.Vars(r)["id"]
 	logger(r.RequestURI)
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/drivers/hall-of-fame/"+driver+".html", nil)
+	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/information/drivers-hall-of-fame-"+driver+"."+id, nil)
 	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
@@ -847,8 +848,6 @@ func main() {
 	router.Handle(route+"en/racing/{year}/{circuitName}/Circuit.html", cached("168h", "text/html; charset=utf-8", Formula1{}.getCircuitDetails)).Methods("GET", "OPTIONS")
 	router.Handle(route+"en/drivers/{driverId}.html", cached("1h", "text/html; charset=utf-8", Formula1{}.getDriverDetails)).Methods("GET", "OPTIONS")
 	router.Handle(route+"en/teams/{teamId}.html", cached("1h", "text/html; charset=utf-8", Formula1{}.getTeamDetails)).Methods("GET", "OPTIONS")
-	router.Handle(route+"en/drivers/hall-of-fame.html", cached("24h", "text/html; charset=utf-8", Formula1{}.getHallOfFame)).Methods("GET", "OPTIONS")
-	router.Handle(route+"en/drivers/hall-of-fame/{driver}.html", cached("24h", "text/html; charset=utf-8", Formula1{}.getHallOfFameDriverDetails)).Methods("GET", "OPTIONS")
 	router.Handle(route+"documents", cached("30s", "text/html; charset=utf-8", Formula1{}.getSessionDocuments)).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"documents/{documentPath}", Formula1{}.getSessionDocument).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"rss/{languageCode}", Formula1{}.getRssFeed).Methods("GET", "OPTIONS")
@@ -873,8 +872,8 @@ func main() {
 	router.Handle(route+"f1/en/racing/{year}/{circuitName}/Circuit.html", cached("168h", "text/html; charset=utf-8", Formula1{}.getCircuitDetails)).Methods("GET", "OPTIONS")
 	router.Handle(route+"f1/en/drivers/{driverId}.html", cached("1h", "text/html; charset=utf-8", Formula1{}.getDriverDetails)).Methods("GET", "OPTIONS")
 	router.Handle(route+"f1/en/teams/{teamId}.html", cached("1h", "text/html; charset=utf-8", Formula1{}.getTeamDetails)).Methods("GET", "OPTIONS")
-	router.Handle(route+"f1/en/drivers/hall-of-fame.html", cached("24h", "text/html; charset=utf-8", Formula1{}.getHallOfFame)).Methods("GET", "OPTIONS")
-	router.Handle(route+"f1/en/drivers/hall-of-fame/{driver}.html", cached("24h", "text/html; charset=utf-8", Formula1{}.getHallOfFameDriverDetails)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/en/drivers/hall-of-fame", cached("24h", "text/html; charset=utf-8", Formula1{}.getHallOfFame)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/en/information/drivers-hall-of-fame-{driver}.{id}", cached("24h", "text/html; charset=utf-8", Formula1{}.getHallOfFameDriverDetails)).Methods("GET", "OPTIONS")
 	router.Handle(route+"f1/documents", cached("30s", "text/html; charset=utf-8", Formula1{}.getSessionDocuments)).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"f1/documents/{documentPath}", Formula1{}.getSessionDocument).Methods("GET", "OPTIONS")
 	router.HandleFunc(route+"f1/rss/{languageCode}", Formula1{}.getRssFeed).Methods("GET", "OPTIONS")
