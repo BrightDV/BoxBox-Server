@@ -45,6 +45,7 @@ var tmp_, _ = base64.StdEncoding.DecodeString("aHR0cHM6Ly9hcGkuZm9ybXVsYTEuY29tL
 var f1Endpoint = string(tmp_)
 var tmp__, _ = base64.StdEncoding.DecodeString("aHR0cHM6Ly9hcGkuZm9ybXVsYS1lLnB1bHNlbGl2ZS5jb20v")
 var fEEndpoint = string(tmp__)
+var HEADERS = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:139.0) Gecko/20100101 Firefox/139.0"
 var DOMAIN string = "*"
 var PORT string = "8080"
 
@@ -95,7 +96,7 @@ func (Formula1) getArticle(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/editorial/articles/"+articleId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -117,7 +118,7 @@ func (Formula1) getArticles(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/editorial/articles?limit=16&tags="+tags+"&offset="+offset+"&articleTypes="+articleTypes, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -134,7 +135,7 @@ func (Formula1) getVideo(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/video-assets/videos/"+videoId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -159,7 +160,7 @@ func (Formula1) getVideos(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/video-assets/videos?limit="+limit+"&tag="+tags+"&offset="+offset, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -175,7 +176,7 @@ func (Formula1) eventTracker(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/event-tracker", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	req.Header.Set("Accept", "application/json")
@@ -193,7 +194,7 @@ func (Formula1) eventTrackerForOneMeeting(w http.ResponseWriter, r *http.Request
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/event-tracker/meeting/"+meetingId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -210,7 +211,7 @@ func (Formula1) getRaceResults(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/race?meeting="+meetingId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -227,7 +228,7 @@ func (Formula1) getQualificationResults(w http.ResponseWriter, r *http.Request) 
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/qualifying?meeting="+meetingId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -245,7 +246,7 @@ func (Formula1) getFreePracticeResults(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/practice?meeting="+meetingId+"&session="+sessionId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -262,7 +263,7 @@ func (Formula1) getSprintQualifyingResults(w http.ResponseWriter, r *http.Reques
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/sprint-shootout?meeting="+meetingId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -279,7 +280,7 @@ func (Formula1) getSprintResults(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/sprint?meeting="+meetingId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -296,7 +297,7 @@ func (Formula1) getStartingGrid(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/fom-results/starting-grid?meeting="+meetingId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -313,7 +314,7 @@ func (Formula1) getRaceResultsV2(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v2/fom-results/race?meeting="+meetingId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -330,7 +331,7 @@ func (Formula1) getQualificationResultsV2(w http.ResponseWriter, r *http.Request
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v2/fom-results/qualifying?meeting="+meetingId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -348,7 +349,7 @@ func (Formula1) getFreePracticeResultsV2(w http.ResponseWriter, r *http.Request)
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v2/fom-results/practice?meeting="+meetingId+"&session="+sessionId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -365,7 +366,7 @@ func (Formula1) getSprintQualifyingResultsV2(w http.ResponseWriter, r *http.Requ
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v2/fom-results/sprint-shootout?meeting="+meetingId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -382,7 +383,7 @@ func (Formula1) getSprintResultsV2(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v2/fom-results/sprint?meeting="+meetingId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -399,7 +400,7 @@ func (Formula1) getStartingGridV2(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v2/fom-results/starting-grid?meeting="+meetingId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -415,7 +416,7 @@ func (Formula1) getDriverStandings(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/editorial-driverlisting/listing", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -431,7 +432,7 @@ func (Formula1) getTeamStandings(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/editorial-constructorlisting/listing", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -447,7 +448,7 @@ func (Formula1) getSchedule(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/editorial-eventlisting/events", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
 	resp, _ := client.Do(req)
@@ -465,7 +466,7 @@ func (Formula1) getFinishedSessions(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/results.html/"+year+"/races/"+fomRaceId+"/"+raceName+".html", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Fprint(w, string(body))
@@ -481,7 +482,7 @@ func (Formula1) getResultsForScraping(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/results.html/"+year+"/races/"+fomRaceId+"/"+raceName+"/"+session+".html", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Fprint(w, string(body))
@@ -495,10 +496,27 @@ func (Formula1) getCircuitDetails(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/racing/"+year+"/"+circuitName+"/Circuit.html", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Fprint(w, string(body))
+}
+
+func (Formula1) getCircuitDetailsFromApi(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
+	meetingId := mux.Vars(r)["meetingId"]
+	var details any
+	logger(r.RequestURI)
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", f1Endpoint+"v1/editorial-assemblies/races?meeting="+meetingId, nil)
+	req.Header.Set("User-Agent", HEADERS)
+	req.Header.Set("apikey", apikey)
+	req.Header.Set("locale", "en")
+	resp, _ := client.Do(req)
+	body, _ := io.ReadAll(resp.Body)
+	json.Unmarshal(body, &details)
+	json.NewEncoder(w).Encode(details)
 }
 
 func (Formula1) getDriverDetails(w http.ResponseWriter, r *http.Request) {
@@ -508,7 +526,7 @@ func (Formula1) getDriverDetails(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/drivers/"+driverId+".html", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Fprint(w, string(body))
@@ -521,7 +539,7 @@ func (Formula1) getTeamDetails(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/teams/"+teamId+".html", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Fprint(w, string(body))
@@ -533,7 +551,7 @@ func (Formula1) getHallOfFame(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/drivers/hall-of-fame", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Fprint(w, string(body))
@@ -547,7 +565,7 @@ func (Formula1) getHallOfFameDriverDetails(w http.ResponseWriter, r *http.Reques
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.formula1.com/en/information/drivers-hall-of-fame-"+driver+"."+id, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Fprint(w, string(body))
@@ -559,7 +577,7 @@ func (Formula1) getSessionDocuments(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.fia.com/documents/championships/fia-formula-one-world-championship-14/season/season-2025-2071", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Fprint(w, string(body))
@@ -572,7 +590,7 @@ func (Formula1) getSessionDocument(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://www.fia.com/system/files/decision-document/"+documentPath, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Fprint(w, string(body))
@@ -607,7 +625,7 @@ func (Formula1) getRssFeed(w http.ResponseWriter, r *http.Request) {
 		"pl":  "https://pl.motorsport.com",
 	}
 	req, _ := http.NewRequest("GET", customFeedUrls[languageCode]+"/rss/f1/news/", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Fprint(w, string(body))
@@ -621,7 +639,7 @@ func (FormulaE) getArticle(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", fEEndpoint+"content/formula-e/text/EN/"+articleId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("Accept", "application/json")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
@@ -636,7 +654,7 @@ func (FormulaE) getArticleAsHtml(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "https://fiaformulae.com/en/news/"+articleId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Fprint(w, string(body))
@@ -653,7 +671,7 @@ func (FormulaE) getArticles(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", fEEndpoint+"content/formula-e/text/EN/?page="+page+"&pageSize=16&tagNames=content-type%3Anews&tagExpression=&playlistTypeRestriction=&playlistId=&detail=&size=16&championshipId=&sort=", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("Accept", "application/json")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
@@ -676,7 +694,7 @@ func (FormulaE) getVideos(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", fEEndpoint+"content/formula-e/playlist/EN/15?page="+page+"&pageSize="+limit+"&detail=DETAILED&size="+limit, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("Accept", "application/json")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
@@ -692,7 +710,7 @@ func (FormulaE) getRaceDetails(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", fEEndpoint+"formula-e/v1/races/"+raceId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("Accept", "application/json")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
@@ -708,7 +726,7 @@ func (FormulaE) getSessions(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", fEEndpoint+"formula-e/v1/races/"+raceId+"/sessions", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("Accept", "application/json")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
@@ -724,7 +742,7 @@ func (FormulaE) getRaceArticles(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", fEEndpoint+"content/formula-e/EN?contentTypes=video&contentTypes=news&page=0&pageSize=10&references=FORMULA_E_RACE:"+raceId+"&onlyRestrictedContent=false&detail=DETAILED", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("Accept", "application/json")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
@@ -741,7 +759,7 @@ func (FormulaE) getSessionResults(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", fEEndpoint+"formula-e/v1/races/"+raceId+"/sessions/"+sessionId+"/results", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("Accept", "application/json")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
@@ -757,7 +775,7 @@ func (FormulaE) getCircuitImageDetails(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", fEEndpoint+"content/formula-e/photo/en/?references=FORMULA_E_RACE:"+raceId+"&tagNames=race:bg-image", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("Accept", "application/json")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
@@ -773,7 +791,7 @@ func (FormulaE) getDriverStandings(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", fEEndpoint+"formula-e/v1/standings/drivers?championshipId="+championshipId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("Accept", "application/json")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
@@ -789,7 +807,7 @@ func (FormulaE) getTeamStandings(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", fEEndpoint+"formula-e/v1/standings/teams?championshipId="+championshipId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("Accept", "application/json")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
@@ -805,7 +823,7 @@ func (FormulaE) getSchedule(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", fEEndpoint+"formula-e/v1/races?championshipId="+championshipId, nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("Accept", "application/json")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
@@ -820,7 +838,7 @@ func (FormulaE) getLatestChampionship(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", fEEndpoint+"formula-e/v1/championships/latest", nil)
-	req.Header.Set("User-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36")
+	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("Accept", "application/json")
 	resp, _ := client.Do(req)
 	body, _ := io.ReadAll(resp.Body)
@@ -867,6 +885,7 @@ func main() {
 	router.Handle(route+"f1/v1/editorial-driverlisting/listing", cached("20s", "application/json", Formula1{}.getDriverStandings)).Methods("GET", "OPTIONS")
 	router.Handle(route+"f1/v1/editorial-constructorlisting/listing", cached("20s", "application/json", Formula1{}.getTeamStandings)).Methods("GET", "OPTIONS")
 	router.Handle(route+"f1/v1/editorial-eventlisting/events", cached("20s", "application/json", Formula1{}.getSchedule)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v1/editorial-assemblies/races/meeting={meetingId}", cached("20s", "application/json", Formula1{}.getCircuitDetailsFromApi)).Methods("GET", "OPTIONS")
 	router.Handle(route+"f1/en/results.html/{year}/races/{fomRaceId}/{raceName}.html", cached("120s", "application/json", Formula1{}.getFinishedSessions)).Methods("GET", "OPTIONS")
 	router.Handle(route+"f1/en/results.html/{year}/races/{fomRaceId}/{raceName}/{session}.html", cached("120s", "text/html; charset=utf-8", Formula1{}.getResultsForScraping)).Methods("GET", "OPTIONS")
 	router.Handle(route+"f1/en/racing/{year}/{circuitName}/Circuit.html", cached("168h", "text/html; charset=utf-8", Formula1{}.getCircuitDetails)).Methods("GET", "OPTIONS")
