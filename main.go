@@ -424,6 +424,23 @@ func (Formula1) getDriverStandings(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(standings)
 }
 
+func (Formula1) getDriverStandingsV2(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
+	year := mux.Vars(r)["year"]
+	var standings any
+	logger(r.RequestURI)
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", f1Endpoint+"v2/fom-results/driverstandings?season="+year, nil)
+	req.Header.Set("User-Agent", HEADERS)
+	req.Header.Set("apikey", apikey)
+	req.Header.Set("locale", "en")
+	resp, _ := client.Do(req)
+	body, _ := io.ReadAll(resp.Body)
+	json.Unmarshal(body, &standings)
+	json.NewEncoder(w).Encode(standings)
+}
+
 func (Formula1) getTeamStandings(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
@@ -431,6 +448,23 @@ func (Formula1) getTeamStandings(w http.ResponseWriter, r *http.Request) {
 	logger(r.RequestURI)
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", f1Endpoint+"v1/editorial-constructorlisting/listing", nil)
+	req.Header.Set("User-Agent", HEADERS)
+	req.Header.Set("apikey", apikey)
+	req.Header.Set("locale", "en")
+	resp, _ := client.Do(req)
+	body, _ := io.ReadAll(resp.Body)
+	json.Unmarshal(body, &standings)
+	json.NewEncoder(w).Encode(standings)
+}
+
+func (Formula1) getTeamStandingsV2(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", DOMAIN)
+	year := mux.Vars(r)["year"]
+	var standings any
+	logger(r.RequestURI)
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", f1Endpoint+"v2/fom-results/constructorstandings?season="+year, nil)
 	req.Header.Set("User-Agent", HEADERS)
 	req.Header.Set("apikey", apikey)
 	req.Header.Set("locale", "en")
@@ -899,6 +933,8 @@ func main() {
 	router.Handle(route+"f1/v2/fom-results/sprint-shootout/meeting={meetingId}", cached("20s", "application/json", Formula1{}.getSprintQualifyingResultsV2)).Methods("GET", "OPTIONS")
 	router.Handle(route+"f1/v2/fom-results/sprint/meeting={meetingId}", cached("20s", "application/json", Formula1{}.getSprintResultsV2)).Methods("GET", "OPTIONS")
 	router.Handle(route+"f1/v2/fom-results/starting-grid/meeting={meetingId}", cached("20s", "application/json", Formula1{}.getStartingGridV2)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v2/fom-results/driverstandings/{year}", cached("20s", "application/json", Formula1{}.getDriverStandingsV2)).Methods("GET", "OPTIONS")
+	router.Handle(route+"f1/v2/fom-results/constructorstandings/{year}", cached("20s", "application/json", Formula1{}.getTeamStandingsV2)).Methods("GET", "OPTIONS")
 
 	// FE championship
 	router.Handle(route+"fe/content/formula-e/text/EN/page={page}&pageSize=16&tagNames=content-type:news&tagExpression=&playlistTypeRestriction=&playlistId=&detail=&size=16&championshipId=&sort=", cached("30s", "application/json", FormulaE{}.getArticles)).Methods("GET", "OPTIONS")
